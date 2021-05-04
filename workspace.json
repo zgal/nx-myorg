@@ -28,15 +28,22 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:build",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/todos",
             "index": "apps/todos/src/index.html",
             "main": "apps/todos/src/main.tsx",
             "polyfills": "apps/todos/src/polyfills.ts",
             "tsConfig": "apps/todos/tsconfig.app.json",
-            "assets": ["apps/todos/src/favicon.ico", "apps/todos/src/assets"],
-            "styles": ["apps/todos/src/styles.css"],
+            "assets": [
+              "apps/todos/src/favicon.ico",
+              "apps/todos/src/assets"
+            ],
+            "styles": [
+              "apps/todos/src/styles.css"
+            ],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -68,7 +75,8 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "todos:build"
+            "buildTarget": "todos:build",
+            "proxyConfig": "apps/todos/proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -79,12 +87,16 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/todos/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "apps/todos/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/todos"],
+          "outputs": [
+            "coverage/apps/todos"
+          ],
           "options": {
             "jestConfig": "apps/todos/jest.config.js",
             "passWithNoTests": true
@@ -113,7 +125,67 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/todos-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/todos-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
+    },
+    "api": {
+      "root": "apps/api",
+      "sourceRoot": "apps\\api\\src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/api",
+            "main": "apps/api/src/main.ts",
+            "tsConfig": "apps/api/tsconfig.app.json",
+            "assets": [
+              "apps/api/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/src/environments/environment.ts",
+                  "with": "apps/api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/api/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/api"
+          ],
+          "options": {
+            "jestConfig": "apps/api/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
